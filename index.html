@@ -6,8 +6,8 @@
     <title>Private Booth - Study Timer</title>
     <style>
         :root {
-            --booth-panel: rgba(30, 30, 38, 0.75); /* 背景が見えるよう半透明に変更 */
-            --accent-wood: #c19a6b; /* 高級感のあるウッドカラー */
+            --booth-panel: rgba(30, 30, 38, 0.75); 
+            --accent-wood: #c19a6b; 
             --text-main: #f5f5f7;
             --text-muted: #c1c1cb;
             --shadow: 0 20px 50px rgba(0,0,0,0.6);
@@ -21,7 +21,6 @@
         }
 
         body {
-            /* 背景画像の設定 */
             background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url('kobetu.png');
             background-size: cover;
             background-position: center;
@@ -38,7 +37,7 @@
         /* すりガラス風の個別ブースコンテナ */
         .booth-container {
             background: var(--booth-panel);
-            backdrop-filter: blur(12px); /* 背景を程よくぼかして文字を読みやすく */
+            backdrop-filter: blur(12px); 
             -webkit-backdrop-filter: blur(12px);
             width: 100%;
             max-width: 460px;
@@ -49,7 +48,6 @@
             position: relative;
         }
 
-        /* 木目調のアクセントライン */
         .booth-container::before {
             content: '';
             position: absolute;
@@ -61,12 +59,34 @@
             border-radius: 0 0 4px 4px;
         }
 
+        /* もどるボタンのスタイル */
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s ease;
+            letter-spacing: 0.05em;
+        }
+
+        .back-btn:hover {
+            color: var(--accent-wood);
+        }
+
         h1 {
             text-align: center;
             font-size: 1.4rem;
             font-weight: 400;
             letter-spacing: 0.2em;
             color: var(--accent-wood);
+            margin-top: 10px; /* ボタンとのバランス調整 */
             margin-bottom: 30px;
             text-shadow: 0 2px 4px rgba(0,0,0,0.5);
         }
@@ -118,7 +138,7 @@
 
         .timer-display {
             font-size: 4.8rem;
-            font-weight: 200; /* より細くスタイリッシュなフォントに */
+            font-weight: 200; 
             font-variant-numeric: tabular-nums;
             letter-spacing: 0.02em;
             margin-bottom: 15px;
@@ -246,6 +266,12 @@
 <body>
 
 <div class="booth-container">
+    <!-- もどるボタン (JavaScriptで直前の履歴に戻る) -->
+    <button class="back-btn" onclick="goBack()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        もどる
+    </button>
+
     <h1>STUDY BOOTH</h1>
 
     <!-- モード切り替えタブ -->
@@ -298,6 +324,15 @@
     const customInputs = document.getElementById('custom-inputs');
     const logList = document.getElementById('log-list');
 
+    // 前のページに戻る関数
+    function goBack() {
+        if (document.referrer) {
+            window.history.back();
+        } else {
+            alert('前の履歴がありません。');
+        }
+    }
+
     function switchMode(mode) {
         clearInterval(timerInterval);
         timerState = 'paused';
@@ -306,7 +341,7 @@
         currentMode = mode;
 
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
+        if(event) event.target.classList.add('active');
 
         customInputs.style.display = 'none';
         display.style.display = 'block';
